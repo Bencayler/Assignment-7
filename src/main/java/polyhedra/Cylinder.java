@@ -68,7 +68,8 @@ public class Cylinder extends Polyhedron {
      */
     public void setRadius(double r)
     {
-        // Implement this function
+        this.radius = r;
+        boundingBox.setUpperRightVertex(getDiameter(), getDiameter(), getHeight());
     }
 
     /**
@@ -78,7 +79,9 @@ public class Cylinder extends Polyhedron {
      */
     public void setHeight(double h)
     {
-        // Implement this function
+        this.height = h;
+        boundingBox.setUpperRightVertex(getDiameter(), getDiameter(), this.height);
+
     }
 
     /**
@@ -94,25 +97,36 @@ public class Cylinder extends Polyhedron {
     @Override
     public Polyhedron clone()
     {
-        return null; // remove this line
-        // Implement this function
+        Cylinder clonedCylinder = new Cylinder(this.radius, this.height);
+        clonedCylinder.boundingBox.setUpperRightVertex(this.boundingBox.getUpperRightVertex());
+        return clonedCylinder;
     }
 
     @Override
     public void read(Scanner scanner)
     {
-        // Implement this function
+        this.height = scanner.nextDouble();
+        this.radius = scanner.nextDouble();
+
+        double h = this.getHeight();
+        double d = this.getDiameter();
+        boundingBox.setUpperRightVertex(d, d, h);
     }
 
     @Override
     public void scale(double scalingFactor)
     {
-        // Implement this function
+        this.height *= scalingFactor;
+        this.radius *= scalingFactor;
+        boundingBox.setUpperRightVertex(this.radius * 2, this.radius * 2, this.height);
     }
 
     @Override
-    public String toString()
-    {
-        return "Cylinder.toString Not Implemented";
+    public String toString() {
+        return String.format(
+            "%sRadius: %.1f Height: %.1f",
+            super.toString(),
+            this.radius,
+            this.getHeight());
     }
 }

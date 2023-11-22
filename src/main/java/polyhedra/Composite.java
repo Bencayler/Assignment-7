@@ -36,14 +36,16 @@ public class Composite extends Polyhedron
      *
      * @param src source Composite object to copy
      *
-     * @TODO complete this function
+     * @TODO complete this function == COMPLETE
      */
     public Composite(Composite src)
     {
         super("Composite");
 
         allPolyhedra = new Vector<Polyhedron>();
-
+        for (Polyhedron poly : src.allPolyhedra) {
+            this.add(poly.clone());
+        }
     }
 
     /**
@@ -51,11 +53,12 @@ public class Composite extends Polyhedron
      *
      * @param toAdd is cloned and the copy is added
      *
-     * @TODO complete this function
+     * @TODO complete this function == COMPLETE
      */
     public void add(Polyhedron toAdd)
     {
-
+        allPolyhedra.add(toAdd.clone());
+        this.boundingBox.merge(toAdd.getBoundingBox());
     }
 
     /**
@@ -63,10 +66,17 @@ public class Composite extends Polyhedron
      *
      * @param scanner input source
      *
-     * @TODO complete this function
+     * @TODO complete this function == COMPLETE
      */
     public void read(Scanner scanner)
     {
+        int numPolyhedra = scanner.nextInt(); 
+        for (int i = 0; i < numPolyhedra; i++) {
+            Polyhedron poly = PolyhedronFactory.createAndRead(scanner);
+            this.allPolyhedra.add(poly);
+        
+        boundingBox.merge(poly.getBoundingBox());
+        }
 
     }
 
@@ -76,15 +86,19 @@ public class Composite extends Polyhedron
      *
      * @param scalingFactor scaling factor
      *
-     * @TODO complete this function
+     * @TODO complete this function == COMPLETE
      */
     public void scale(double scalingFactor)
     {
+        for (Polyhedron poly : allPolyhedra) {
+            poly.scale(scalingFactor);
+        }
 
+        boundingBox.scale(scalingFactor);
     }
 
     /**
-     * Retrive the number of Polyhedra.
+     * Retrieve the number of Polyhedra.
      *
      * @return the number of Polyhedra that comprise this Composite object
      */
@@ -110,13 +124,22 @@ public class Composite extends Polyhedron
      *
      * @return String containing all component _Polyhedra_ objects
      *
-     * @TODO complete this function
+     * @TODO complete this function == TEST PASSING
      */
     @Override
     public String toString()
     {
 
-        return "Composite.toString not implemented";
+        StringBuilder bld = new StringBuilder();
+
+        bld.append(super.toString());
+        bld.append(this.size() + " polyhedra" + "\n");
+        
+        for (Polyhedron poly : this.allPolyhedra) {
+            bld.append("  " + poly + "\n");
+        }
+
+        return bld.toString();
     }
 }
 
